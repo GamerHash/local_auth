@@ -69,9 +69,19 @@
                 }];
     [alert addAction:additionalAction];
   }
-  [[UIApplication sharedApplication].delegate.window.rootViewController presentViewController:alert
-                                                                                     animated:YES
-                                                                                   completion:nil];
+      
+  @try {
+    dispatch_async(dispatch_get_main_queue(), ^{
+      [[UIApplication sharedApplication].delegate.window.rootViewController presentViewController:alert  animated:YES  completion:nil];
+    });
+  } @catch (NSException *exception) {
+      NSLog(@"Exception presentViewController: %@", exception);
+  } @finally {
+  }
+      
+//  [[UIApplication sharedApplication].delegate.window.rootViewController presentViewController:alert
+//                                                                                     animated:YES
+//                                                                                   completion:nil];
 }
 
 - (void)getAvailableBiometrics:(FlutterResult)result {
